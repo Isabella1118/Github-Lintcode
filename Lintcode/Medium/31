@@ -8,3 +8,6 @@ Return the partitioning index, i.e the first index i nums[i] >= k.
 Example
 If nums = [3,2,2,1] and k=2, a valid answer is 1.
 
+Compare with QuickSort, but ther is a difference: the situation when element == k.
+
+
