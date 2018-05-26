@@ -1,0 +1,27 @@
+49. Sort Letters by Case
+
+Given a string which contains only letters. Sort it by lower case first and upper case second.
+
+Example
+For "abAcD", a reasonable answer is "acbAD"
+
+Challenge
+Do it in one-pass and in-place.
+
+isupper()：检验字符串中所有的字母是否都为大写。
+lambda用法：func = lambda x = x+1
+           def func(x)
+           return x+1
+sorted(iterable[,cmp[,key[, reverse]]])
+iterable.sort(cmp[,key[, reverse]])
+这里iterable为指定要排序的list或iterable， cmp为指定排序时进行比较的函数， key为函数：指定待排序元素的哪一想进行排序。
+
+Solution：
+
+class Solution:
+    """
+    @param: chars: The letter array you should sort by Case
+    @return: nothing
+    """
+    def sortLetters(self, chars):
+        chars.sort(key=lambda c: c.isupper())
