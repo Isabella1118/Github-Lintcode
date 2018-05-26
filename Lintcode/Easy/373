@@ -8,6 +8,8 @@ Given [1, 2, 3, 4], return [1, 3, 2, 4]
 Challenge
 Do it in-place.
 
+按奇偶，奇数去左边，偶数去右边，左右相互交换即可。
+
 Solution:
 
 class Solution:
@@ -18,7 +20,7 @@ class Solution:
     def partitionArray(self, nums):
         start, end = 0, len(nums) - 1
         while start < end:
-            while start < end and nums[start] % 2 != 0:
+            while start < end and nums[start] % 2 != 0: //这里用nums[start] % 2 == 1也可以，因为奇数除2余数就是1
                 start += 1
             while start < end and nums[end] % 2 == 0:
                 end -= 1
