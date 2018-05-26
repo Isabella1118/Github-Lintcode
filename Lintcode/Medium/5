@@ -1,0 +1,32 @@
+5. Kth Largest Element
+
+Find K-th largest element in an array.
+
+Example
+In array [9,3,2,4,8], the 3rd largest element is 4.
+
+In array [1,2,3,4,5], the 1st largest element is 5, 2nd largest element is 4, 3rd largest element is 3 and etc.
+
+Challenge
+O(n) time, O(1) extra memory.
+
+Solution:
+
+import random
+class Solution:
+    # @param {integer[]} nums
+    # @param {integer} k
+    # @return {integer}
+    def kthLargestElement(self, k, nums):
+        pivot = random.choice(nums)
+        nums1, nums2 = [], []
+        for num in nums:
+            if num > pivot:
+                nums1.append(num)
+            elif num < pivot:
+                nums2.append(num)
+        if k <= len(nums1):
+            return self.kthLargestElement(k, nums1)
+        if k > len(nums) - len(nums2):
+            return self.kthLargestElement(k - (len(nums) - len(nums2)), nums2)
+        return pivot
