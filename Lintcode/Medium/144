@@ -1,0 +1,35 @@
+Interleaving Positive and Negative Numbers
+
+Given an array with positive and negative integers. Re-range it to interleaving with positive and negative integers.
+
+Example
+Given [-1, -2, -3, 4, 5, 6], after re-range, it will be [-1, 5, -2, 4, -3, 6] or any other reasonable answer.
+
+Challenge
+Do it in-place and without extra memory.
+
+
+class Solution:
+    """
+    @param: A: An integer array.
+    @return: nothing
+    """
+    def subfun(self, A, B):
+        ans = []
+        for i in range(len(B)):
+            ans.append(A[i])
+            ans.append(B[i])
+        if len(A) > len(B):
+            ans.append(A[-1])
+        return ans
+
+    def rerange(self, A):
+        # write your code here
+        Ap = [i for i in A if i > 0]
+        Am = [i for i in A if i < 0]
+        if len(Ap) > len(Am):
+            tmp = self.subfun(Ap, Am)
+        else:
+            tmp = self.subfun(Am, Ap)
+        for i in range(len(tmp)):
+            A[i] = tmp[i]
