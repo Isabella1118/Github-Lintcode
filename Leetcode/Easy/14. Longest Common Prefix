@@ -1,0 +1,36 @@
+Write a function to find the longest common prefix string amongst an array of strings.
+
+If there is no common prefix, return an empty string "".
+
+Example 1:
+
+Input: ["flower","flow","flight"]
+Output: "fl"
+Example 2:
+
+Input: ["dog","racecar","car"]
+Output: ""
+Explanation: There is no common prefix among the input strings.
+Note:
+
+All given inputs are in lowercase letters a-z.
+
+Thinking: 如果列表长度大于一，就把第一个字符串当做基准，用一个指针来表示在此之前的字符是满足要求的。
+遍历每一个字符串，把指针对应的字符与基准中相应的字符做比较，如不同则前面的子字符串就是所要求的结果；
+如果全都相同，则指针右移。还有一种情况要考虑，后面的字符串可能没有第一个字符串长，如果指针超过了最短的字符串也应该终止。
+
+class Solution:
+    def longestCommonPrefix(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+        if not strs:
+            return ""
+        
+        longest = strs[0]
+        for i in range(len(strs[0])):    # 第一个字符串长度为基准
+            for str in strs:
+                if len(str) <= i or strs[0][i] != str[i]:    # 后面的字符串比第一个短or相对的字符不一样
+                    return strs[0][:i]                       # return第一个字符串里的满足条件的字符
+        return strs[0]
