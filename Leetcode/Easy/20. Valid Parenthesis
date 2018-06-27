@@ -1,0 +1,55 @@
+Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if:
+
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+Note that an empty string is also considered valid.
+
+Example 1:
+
+Input: "()"
+Output: true
+Example 2:
+
+Input: "()[]{}"
+Output: true
+Example 3:
+
+Input: "(]"
+Output: false
+Example 4:
+
+Input: "([)]"
+Output: false
+Example 5:
+
+Input: "{[]}"
+Output: true
+
+Thinking:用栈来解决的问题，遇到左括号就加入栈内，遇到右括号时如果栈为空（类似"]]]"的情况），则失败，否则取栈顶元素，看两个括号是否匹配。
+如果正要入栈的是右括号，而栈顶元素不是能与之消去的相应左括号，那么该输入字符串一定是无效的。
+如果最后栈不为空（类似"[[["的情况），则匹配失败。
+
+class Solution:
+    def isValid(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        if len(s) % 2 == 1:
+            return False
+        stack = []
+        left = ("(", "[", "{")
+        right = (")", "]", "}")
+        zip(left, right)
+        for v in s:
+            if v in left:
+                stack.append(v)
+            else:
+                if not stack:
+                    return False
+                p = stack.pop()
+                if left.index(p) != right.index(v):
+                    return False
+        return len(stack) == 0
