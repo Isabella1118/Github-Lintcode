@@ -1,0 +1,39 @@
+Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.
+
+Example:
+
+Input: 1->2->4, 1->3->4
+Output: 1->1->2->3->4->4
+
+Thinking: 为了避免分类讨论，添加一个假的头节点。现在只需要两个指针分别指向原来的两个链表，将其中比较小的节点添加到新的链表中。
+传入的参数l1和l2正好可以当作遍历两个链表的指针。
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def mergeTwoLists(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        temp = ListNode(-1)    # 添加假头节点
+        head = temp
+        
+        while l1 and l2:
+            if l1.val > l2.val:     # 添加比较小的元素到temp.next
+                temp.next = l2
+                l2 = l2.next
+            else:
+                temp.next = l1
+                l1 = l1.next
+            temp = temp.next        # 让temp等于temp.next（更新）
+        if l1:
+            temp.next = l1
+        else:
+            temp.next = l2
+        return head.next             # return头节点.next
