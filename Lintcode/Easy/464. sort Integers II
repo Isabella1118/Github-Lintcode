@@ -1,0 +1,37 @@
+Description
+Given an integer array, sort it in ascending order. Use quick sort, merge sort, heap sort or any O(nlogn) algorithm.
+
+Example
+Given [3, 2, 1, 4, 5], return [1, 2, 3, 4, 5].
+
+class Solution:
+    """
+    @param A: an integer array
+    @return: nothing
+    """
+    def sortIntegers2(self, A):
+        # write your code here
+        self.quicksort(A, 0, len(A)-1)
+    
+    def quicksort(self, A, start, end):
+        if start >= end:    #  不符合条件
+            return
+        
+        left, right = start, end                  # index
+        
+        pivot = A[(start + end) // 2]             #  pivot是value不是index
+        
+        while left <= right:                              #  全是left，right，不用start，end了
+            while left <= right and A[left] < pivot:
+                left += 1
+        
+            while left <= right and A[right] > pivot:
+                right -= 1
+        
+            if left <= right:
+                A[left], A[right] = A[right], A[left]
+                left += 1
+                right -= 1
+    
+        self.quicksort(A, start, right)      #  注意在def内，从左到右循环两次
+        self.quicksort(A, left, end)
