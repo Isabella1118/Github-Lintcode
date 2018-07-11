@@ -1,0 +1,62 @@
+Description
+Clone an undirected graph. Each node in the graph contains a label and a list of its neighbors.
+
+How we serialize an undirected graph:
+
+Nodes are labeled uniquely.
+
+We use # as a separator for each node, and , as a separator for node label and each neighbor of the node.
+
+As an example, consider the serialized graph {0,1,2#1,2#2,2}.
+
+The graph has a total of three nodes, and therefore contains three parts as separated by #.
+
+First node is labeled as 0. Connect node 0 to both nodes 1 and 2.
+Second node is labeled as 1. Connect node 1 to node 2.
+Third node is labeled as 2. Connect node 2 to node 2 (itself), thus forming a self-cycle.
+Visually, the graph looks like the following:
+
+   1
+  / \
+ /   \
+0 --- 2
+     / \
+     \_/
+     
+Thinking: 为了避免循环访问，要对已经复制过的节点进行缓存，通过一个由label和node组成的字典来记录已经访问过的节点。当通过neighbor关系来访问一个node时，
+如果它是第一次被访问，则要将其加入一个stack中，在stack中的元素表示要继续访问它neighbor的元素，并记录它已经被访问过，同时要update已经访问过的node中
+它的neighbor node的neighbor list。当stack为空时，表示所有node都已经访问完毕，graph也copy成功。
+
+Solution:
+
+"""
+Definition for a undirected graph node
+class UndirectedGraphNode:
+    def __init__(self, x):
+        self.label = x
+        self.neighbors = []
+"""
+
+
+class Solution:
+    """
+    @param: node: A undirected graph node
+    @return: A undirected graph node
+    """
+    def cloneGraph(self, node):
+        if not node:
+            return node
+        
+        visited = {}
+        first = UndirectedGraphNode(node.label)
+        visited[node.label] = first
+        stack = [node]
+        
+        while stack:
+            top = stack.pop()
+            for n in top.neighbors:
+                if n.label not in visited:
+                    visited[n.label] = UndirectedGraphNode(n.label)
+                    stack.append(n)
+                visited[top.label].neighbors.append(visited[n.label])
+        return first
