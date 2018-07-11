@@ -14,7 +14,9 @@ The topological order can be:
 [0, 2, 3, 1, 5, 4]
 ...
 
-Thinking:
+Thinking: Topo order, 有向图，箭头，有依赖关系。
+1. 没有限制的nodes（直接能得到的）
+2. 依赖1的nodes可能会unlock
 
 Solution:
 
