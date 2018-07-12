@@ -1,0 +1,82 @@
+Description
+
+Given a knight in a chessboard (a binary matrix with 0 as empty and 1 as barrier) with a source position, find the shortest path to a destination position, return the length of the route.
+Return -1 if knight can not reached.
+
+source and destination must be empty.
+Knight can not enter the barrier.
+
+Have you met this question in a real interview?  
+Clarification
+If the knight is at (x, y), he can get to the following positions in one step:
+
+(x + 1, y + 2)
+(x + 1, y - 2)
+(x - 1, y + 2)
+(x - 1, y - 2)
+(x + 2, y + 1)
+(x + 2, y - 1)
+(x - 2, y + 1)
+(x - 2, y - 1)
+
+Example
+[[0,0,0],
+ [0,0,0],
+ [0,0,0]]
+source = [2, 0] destination = [2, 2] return 2
+
+[[0,1,0],
+ [0,0,0],
+ [0,0,0]]
+source = [2, 0] destination = [2, 2] return 6
+
+[[0,1,0],
+ [0,0,1],
+ [0,0,0]]
+source = [2, 0] destination = [2, 2] return -1
+
+Thinking：8个方向，最短路径本质上和分层遍历一样，从起点出发在第几层时走到了终点。From source to destination based on some rules。
+BFS：从起点（A状态）到终点（B状态）需要经过几步。每个点有8个方向可以走，所以在每一层，要找8个方向，判断是否越界or已经遍历过。
+
+Solution：
+
+"""
+Definition for a point.
+class Point:
+    def __init__(self, a=0, b=0):
+        self.x = a
+        self.y = b
+"""
+
+class Solution:
+    """
+    @param grid: a chessboard included 0 (false) and 1 (true)
+    @param source: a point
+    @param destination: a point
+    @return: the shortest path 
+    """
+    def shortestPath(self, grid, source, destination):
+        m = len(grid)     # number of rows
+        n = len(grid[0])  # number of columns
+        
+        import Queue
+        q = Queue.Queue()
+        q.put(source)
+        step = 0
+        
+        value = [(1,2), (1,-2), (-1,2), (-1,-2), (2,1), (2,-1), (-2,1), (-2,-1)]
+        while not q.empty():
+            size = q.qsize()
+            for s in xrange(size):
+                head = q.get()
+                if destination.x == head.x and destination.y == head.y:
+                    return step
+                for dx, dy in value:
+                    x, y = head.x + dx, head.y + dy
+                    if x >= 0 and x < m and y >= 0 and y < n and grid[x][y] != 1:     # 把经过的点标记为1
+                        grid[x][y] = 1
+                        q.put(Point(x,y))
+            
+            step += 1
+        
+        return -1
