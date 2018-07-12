@@ -36,7 +36,7 @@ source = [2, 0] destination = [2, 2] return 6
 source = [2, 0] destination = [2, 2] return -1
 
 Thinking：8个方向，最短路径本质上和分层遍历一样，从起点出发在第几层时走到了终点。From source to destination based on some rules。
-BFS：从起点（A状态）到终点（B状态）需要经过几步。每个点有8个方向可以走，所以在每一层，要找8个方向，判断是否越界or已经遍历过。
+BFS：从起点（A状态）到终点（B状态）需要经过几步。每个点有8个方向可以走，所以在每一层，要找8个方向，判断是否越界or已经遍历过。下面的方法复杂度为O(m*n)。
 
 Solution：
 
@@ -64,7 +64,7 @@ class Solution:
         q.put(source)
         step = 0
         
-        value = [(1,2), (1,-2), (-1,2), (-1,-2), (2,1), (2,-1), (-2,1), (-2,-1)]
+        value = [(1,2), (1,-2), (-1,2), (-1,-2), (2,1), (2,-1), (-2,1), (-2,-1)]    # 8 directions
         while not q.empty():
             size = q.qsize()
             for s in xrange(size):
