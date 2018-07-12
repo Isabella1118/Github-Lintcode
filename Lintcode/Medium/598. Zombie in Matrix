@@ -1,0 +1,63 @@
+Description
+
+Given a 2D grid, each cell is either a wall 2, a zombie 1 or people 0 (the number zero, one, two).Zombies can turn the nearest people(up/down/left/right) into zombies every day, but can not through wall. How long will it take to turn all people into zombies? Return -1 if can not turn all people into zombies.
+
+Example
+Given a matrix:
+
+0 1 2 0 0
+1 0 0 2 1
+0 1 0 0 0
+return 2
+
+Thinking: 对图进行分层遍历，遍历所有的neighbors：1.队列不空；2.循环当前内层；3.遍历一个点所有的neighbors（连接点），再根据条件判断要不要
+加到下一层去。用BFS，先过一遍矩阵，把zombie的位置都找到。然后开始从这些zombie出发上下左右去把人变成zombie，得到变zombie的人数。如果没有人了，
+说明人都变zombie了。如果循环出来还有人存在，说明没有全变zombie，返回-1.
+
+Solution:
+
+class Solution:
+    """
+    @param grid: a 2D integer grid
+    @return: an integer
+    """
+    def zombie(self, grid):
+        
+        n = len(grid)   # number of rows
+        if n == 0:
+            return 0
+        
+        m = len(grid[0])    # number of columns
+        if m == 0:
+            return 0
+        
+        # find number of zombies
+        q = []
+        for i in range(n):
+            for j in range(m):
+                if grid[i][j] == 1:
+                    q.append((i,j))
+                    
+        # zombies go in 4 directions and turn people into zombies
+        d = [[0,-1], [0,1], [-1,0], [1,0]] # 4 directions
+        days = 0
+        while q:
+            days += 1
+            new_q = []
+            for node in q:
+                for k in range(4):
+                    x = node[0] + d[k][0]    # grid[x][y] x is node[0] while y is node[1]
+                    y = node[1] + d[k][1]
+                    if x >= 0 and x < n and y >= 0 and y < m and grid[x][y] == 0:
+                        grid[x][y] = 1
+                        new_q.append((x,y))
+            
+            q = new_q
+            
+        # if there are still people left
+        for i in range(n):
+            for j in range(m):
+                if grid[i][j] == 0:
+                    return -1
+        
+        return days-1
