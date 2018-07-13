@@ -1,0 +1,52 @@
+Description
+
+There are a total of n courses you have to take, labeled from 0 to n - 1.
+
+Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]
+
+Given the total number of courses and a list of prerequisite pairs, is it possible for you to finish all courses?
+
+Example
+Given n = 2, prerequisites = [[1,0]]
+Return true
+
+Given n = 2, prerequisites = [[1,0],[0,1]]
+Return false
+
+Thinking：定义一个queue变量，将所有indegrees为0的放入队列中，然后遍历队列，从有向图中遍历其连接的点，每到达一个新节点，indegrees减1.如果此时
+indegrees为0则放入队列末尾。直到遍历完队列中的所有值，若果此时还有节点的indegrees不为0，则说明环存在，返回false，反之则可以完成全部选课，返回
+true。
+
+Solution：
+
+class Solution:
+    """
+    @param: numCourses: a total of n courses
+    @param: prerequisites: a list of prerequisite pairs
+    @return: true if can finish all courses or false
+    """
+    def canFinish(self, numCourses, prerequisites):
+        edges = {i:[] for i in xrange(numCourses)}
+        degrees = [0 for i in xrange(numCourses)]
+        for i, j in prerequisites:
+            edges[j].append(i)
+            degrees[i] += 1
+        
+        import Queue
+        queue = Queue.Queue(maxsize = numCourses)
+        count = 0
+        
+        for i in xrange(numCourses):     # courses with no prerequisite
+            if degrees[i] == 0:
+                queue.put(i)
+        
+        while not queue.empty():         # add non-prerequisite classes to queue
+            node = queue.get()
+            count += 1
+            
+            for x in edges[node]:        # go through neighbors of nodes, degrees-1 each time
+                degrees[x] -= 1
+                if degrees[x] == 0:      # add degree 0 to queue
+                    queue.put(x)
+                    
+        return count == numCourses
