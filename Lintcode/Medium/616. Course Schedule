@@ -1,0 +1,57 @@
+Description
+
+There are a total of n courses you have to take, labeled from 0 to n - 1.
+Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]
+
+Given the total number of courses and a list of prerequisite pairs, return the ordering of courses you should take to finish all courses.
+
+There may be multiple correct orders, you just need to return one of them. If it is impossible to finish all courses, return an empty array.
+
+Example
+Given n = 2, prerequisites = [[1,0]]
+Return [0,1]
+
+Given n = 4, prerequisites = [1,0],[2,0],[3,1],[3,2]]
+Return [0,1,2,3] or [0,2,1,3]
+
+Thinking:
+
+Solution:和course schedule类似，是和拓扑排序的合并变种，添加一个count去判断拓扑序列的总数和是否等于课程数，如果等于则返回拓扑序列，如果不等于
+则意味着不能选择全部课程。
+
+class Solution:
+    """
+    @param: numCourses: a total of n courses
+    @param: prerequisites: a list of prerequisite pairs
+    @return: the course order
+    """
+    def findOrder(self, numCourses, prerequisites):
+        indegree = [0] * numCourses
+        neighbor = {i:[] for i in xrange(numCourses)}
+        
+        for i,j in prerequisites:
+            neighbor[j].append(i)
+            indegree[i] += 1
+        
+        queue, res = [], []
+        count = 0
+        
+        for index in xrange(numCourses):      # 把indegree为0的点放入queue
+            if indegree[index] == 0:
+                queue.append(index)
+        
+        while len(queue) > 0:                 # 把indegree为0的点放入res
+            course = queue.pop(0)
+            count += 1
+            res.append(course)
+            
+            for c in neighbor[course]:        # 遍历indegree为0的点的neighbor，indegree-1 each time，如果indegree为0则放入queue中
+                indegree[c] -= 1
+                if indegree[c] == 0:
+                    queue.append(c)
+        
+        if count == numCourses:               # 如果count等于课程数，则返回indgree为0的队列
+            return res
+        
+        else: 
+            return []                         # 如果count不等于课程数，则返回空队列
