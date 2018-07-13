@@ -1,0 +1,60 @@
+Description
+
+Given two words (start and end), and a dictionary, find the length of shortest transformation sequence from start to end, such that:
+
+Only one letter can be changed at a time
+Each intermediate word must exist in the dictionary
+Return 0 if there is no such transformation sequence.
+All words have the same length.
+All words contain only lowercase alphabetic characters.
+
+Example
+Given:
+start = "hit"
+end = "cog"
+dict = ["hot","dot","dog","lot","log"]
+As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog",
+return its length 5.
+
+Thinking: 因为每次变换后的字符（word）都要在给定的字符串中（dict），所以每次变化的情况都是有限的。把变化的过程看成一个树的结构，由某一个字符串变化
+而来的字符串就成为该字符串的子树：
+1.把起始字符串（start）当成根节点，如果在变化过程中，某一个节点是目标字符串，那么就找到了一条变化路径。
+2.节点所在的高度能够反映出变化到该节点时经历了几次变化。
+3.在树上层出现过的字符串没必要在下层再次出现，因为如果该字符串是转换过程中必须经过的中间字符串，那么应该挑选上层的该字符串继续进行变化，它的转换次数
+少。
+4.如果上一层有多个字符串可以转换为下一层同一个字符串，那么只需要找到其中一个转换关系即可，没必要找到所有的转换关系。
+5.基于第3点和第4点，当集合中的字符串在树中出现后，就可以把它从集合中删除。这样可以防止字符串不断地循环转化。
+6.因此此题就变成了一个深度优先遍历问题，只需要依次遍历每一层的节点，如果在该层找到了目标字符串，只需要返回相应的变化次数。如果到某一层树的节点无法向
+下延伸，且没有找到目标字符串，那么就不存在这样的转换关系，返回0。
+
+Solution:
+
+class Solution:
+    """
+    @param: start: a string
+    @param: end: a string
+    @param: dict: a set of string
+    @return: An integer
+    """
+    def ladderLength(self, start, end, dict):
+        dict.add(end)
+        cur_level = [start]
+        next_level = []
+        depth = 1
+        n = len(start)
+        
+        while cur_level:
+            for item in cur_level:
+                if item == end:
+                    return depth
+                for i in xrange(n):
+                    for c in "abcdefghijklmnopqrstuvwxyz":
+                        word = item[:i] + c + item[i+1:]
+                        if word in dict:
+                            dict.remove(word)
+                            next_level.append(word)
+            depth += 1
+            cur_level = next_level
+            next_level = []
+                
+        return 0
