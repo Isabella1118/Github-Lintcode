@@ -1,0 +1,56 @@
+Description
+
+Given a collection of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.
+
+Each number in C may only be used once in the combination.
+
+All numbers (including target) will be positive integers.
+Elements in a combination (a1, a2, … , ak) must be in non-descending order. (ie, a1 ≤ a2 ≤ … ≤ ak).
+The solution set must not contain duplicate combinations.
+
+Example
+Given candidate set [10,1,6,7,2,1,5] and target 8,
+
+A solution set is:
+
+[
+  [1,7],
+  [1,2,5],
+  [2,6],
+  [1,1,6]
+]
+
+Thinking：和combination sum题类似，主要的区别是combination sum中的元素是没有重复的，而且每个元素可以使用无限次；而这题中的元素是有重复的，每个
+元素最多使用一次。要去掉所有与当前元素相等的元素。
+
+Solution：
+
+class Solution:
+    """
+    @param num: Given the candidate numbers
+    @param target: Given the target number
+    @return: All the combinations that sum to target
+    """
+    def combinationSum2(self, num, target):
+        if not num:
+            return []
+        num.sort()
+        result = []
+        self.combination(num, target, [], result)
+        return result
+        
+    def combination(self, num, target, current, result):
+        s = sum(current) if current else 0
+        if s > target:
+            return
+        elif s == target:
+            result.append(current)
+            return
+        else:
+            i = 0
+            while i < len(num):
+                self.combination(num[i+1:], target, current + [num[i]], result)
+            # ignoring repeating elements
+                while i + 1 < len(num) and num[i] == num[i+1]:
+                    i+=1
+                i+=1
