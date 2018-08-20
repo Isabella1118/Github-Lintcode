@@ -1,0 +1,69 @@
+Description
+
+Given a non-empty binary search tree and a target value, find the value in the BST that is closest to the target.
+
+Given target value is a floating point.
+You are guaranteed to have only one unique value in the BST that is closest to the target.
+
+Example
+Given root = {1}, target = 4.428571, return 1.
+
+Thinking:用非递归实现upperbound 和 lowerbound, 方法是向接近target的分支遍历,直到None.
+如果是找upperbound, 那么向左走时记录last node(这是这是当前最接近target的大数).
+如果是找lowerbound, 那么向右走时记录last node(因为这是当前最接近target的小数).
+
+
+Solution:
+
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: the given BST
+    @param target: the given target
+    @return: the value in the BST that is closest to the target
+    """
+    def closestValue(self, root, target):
+        if not root:
+            raise Exception
+            
+        lower = self.findLower(root, target)
+        upper = self.findUpper(root, target)
+        
+        if lower and upper:
+            if target - lower.val > upper.val - target:
+                return upper.val
+            else:
+                return lower.val
+        if upper:
+            return upper.val
+        if lower:
+            return lower.val
+    
+    def findLower(self, root, target):
+        curr = root
+        last = None
+        while curr:
+            if curr.val <= target: # 比target小，则往右走找比root大的数里最接近target的数
+                last = curr
+                curr = curr.right
+            else:
+                curr = curr.left  # 比target大，则往左走
+        return last
+    
+    def findUpper(self, root, target):
+        curr = root
+        last = None
+        while curr:
+            if curr.val > target: # 比target大，则往左走找比root小的数里最接近target的数
+                last = curr
+                curr = curr.left
+            else:
+                curr = curr.right # 比target小，则往右走
+        return last
