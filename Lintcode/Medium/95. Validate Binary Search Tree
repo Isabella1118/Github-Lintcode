@@ -1,0 +1,56 @@
+Description
+Given a binary tree, determine if it is a valid binary search tree (BST).
+
+Assume a BST is defined as follows:
+
+The left subtree of a node contains only nodes with keys less than the node's key.
+The right subtree of a node contains only nodes with keys greater than the node's key.
+Both the left and right subtrees must also be binary search trees.
+A single node tree is a BST
+ 
+Example
+An example:
+
+  2
+ / \
+1   4
+   / \
+  3   5
+The above binary tree is serialized as {2,1,4,#,#,3,5} (in level order).
+
+Thinking: 在树的中序遍历中，节点的顺序是左节点、根节点、右节点。这就说明一棵二叉搜索树要符合要求时，
+它的中序遍历序列一定是递增的。如果在中序遍历中出现前面的节点大于后面的节点，则说明不符合要求。
+
+Solution:
+
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: True if the binary tree is BST, or false
+    """
+    def isValidBST(self, root):
+        self.lastVal = None
+        self.isBST = True
+        self.validate(root)
+        return self.isBST
+    
+    def validate(self, root):
+        if root is None:
+            return
+        self.validate(root.left)
+        if self.lastVal is not None and self.lastVal >= root.val:
+            self.isBST = False
+            return
+        self.lastVal = root.val
+        self.validate(root.right)
+
+
+
