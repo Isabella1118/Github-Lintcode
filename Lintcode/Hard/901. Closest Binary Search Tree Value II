@@ -31,16 +31,16 @@ class Solution:
         if root is None:
             return []
         
-        self.allnodes = {}
+        self.allnodes = {}    //dictionary
         diff = []
         result = []
         self.dsf(root, target)
-        for i in self.allnodes:
+        for i in self.allnodes:   //把差值key放入list
             diff.append(i)
-        diff.sort()
+        diff.sort()         //给list排序
         for i in range(k):
             a = diff[i]
-            result.append(self.allnodes[a])
+            result.append(self.allnodes[a])      //根据差值key找出符合要求的root.value
             
         return result
         
@@ -48,8 +48,8 @@ class Solution:
     def dsf(self, root, target):
         if root is None:
             return
-        dif = abs(root.val - target)
-        self.allnodes[dif] = root.val
+        dif = abs(root.val - target)  //差值
+        self.allnodes[dif] = root.val   //差值作为key，root.value为value
         self.dsf(root.left, target)
         self.dsf(root.right, target)
         return
