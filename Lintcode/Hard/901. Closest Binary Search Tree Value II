@@ -1,0 +1,55 @@
+Description
+Given a non-empty binary search tree and a target value, find k values in the BST that are closest to the target.
+
+Given target value is a floating point.
+You may assume k is always valid, that is: k ≤ total nodes.
+You are guaranteed to have only one unique set of k values in the BST that are closest to the target.
+
+Example
+Given root = {1}, target = 0.000000, k = 1, return [1].
+
+Thinking: 迭代法找出所有的点与target的差值， 把对应的差值和点存到dictionary， 然后对差值排序， 输出前K个较小的差值对应的点
+
+Solution:
+
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: the given BST
+    @param target: the given target
+    @param k: the given k
+    @return: k values in the BST that are closest to the target
+    """
+    def closestKValues(self, root, target, k):
+        if root is None:
+            return []
+        
+        self.allnodes = {}
+        diff = []
+        result = []
+        self.dsf(root, target)
+        for i in self.allnodes:
+            diff.append(i)
+        diff.sort()
+        for i in range(k):
+            a = diff[i]
+            result.append(self.allnodes[a])
+            
+        return result
+        
+    
+    def dsf(self, root, target):
+        if root is None:
+            return
+        dif = abs(root.val - target)
+        self.allnodes[dif] = root.val
+        self.dsf(root.left, target)
+        self.dsf(root.right, target)
+        return
