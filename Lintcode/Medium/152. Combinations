@@ -1,0 +1,38 @@
+Description
+Given two integers n and k, return all possible combinations of k numbers out of 1 ... n.
+
+You don't need to care the order of combinations, but you should make sure the numbers in a combination are sorted.
+  
+Example
+Given n = 4 and k = 2, a solution is:
+
+[
+  [2,4],
+  [3,4],
+  [2,3],
+  [1,2],
+  [1,3],
+  [1,4]
+]
+
+Thinking: 采用递归的方式，在n个数中选k个，如果n大于k，那么可以分类讨论，如果选了n，那么就是在1到(n-1)中选(k-1)个，
+否则就是在1到(n-1)中选k个。递归终止的条件是k为1，这时候1到n都符合要求。
+
+Solution:
+
+class Solution:
+    """
+    @param n: Given the range of numbers
+    @param k: Given the numbers of combinations
+    @return: All the combinations of k numbers out of 1..n
+    """
+    def combine(self, n, k):
+        if k == 1:
+            return [[i+1] for i in range(n)]    // 从0到n-1变成题目给定范围的1到n
+        
+        result = []
+        if n > k:
+            result =  [r + [n] for r in self.combine(n-1, k-1)] + self.combine(n-1, k)    
+        else:
+            result =  [r + [n] for r in self.combine(n-1, k-1)]
+        return result
