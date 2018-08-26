@@ -1,0 +1,37 @@
+Description
+Give a string, you can choose to split the string after one character or two adjacent characters, and make the string to be composed of only one character or two characters. Output all possible results.
+ 
+Example
+Given the string "123"
+return [["1","2","3"],["12","3"],["1","23"]]
+
+Thinking: 使用DFS
+
+Solution:
+
+class Solution:
+    """
+    @param: : a string to be split
+    @return: all possible split string array
+    """
+
+    def splitString(self, s):
+        return self.helper(s)
+    
+    def helper(self,s):
+        if len(s) == 0:
+            return [[]]
+        if len(s) == 1:
+            return [[s]]
+        
+        rt = []
+        one = self.splitString(s[:-1])    //从头到倒数第二个数
+        two = self.splitString(s[:-2])    //从头到倒数第三个数
+        
+        for o in one:
+            rt.append(o + [s[-1:]])      //最后一个数
+            
+        for t in two:
+            rt.append(t + [s[-2:]])     //最后个数
+        
+        return rt
