@@ -1,0 +1,66 @@
+Description
+Implement wildcard pattern matching with support for '?' and '*'.
+
+'?' Matches any single character.
+'*' Matches any sequence of characters (including the empty sequence).
+The matching should cover the entire input string (not partial).
+
+Example
+isMatch("aa","a") → false
+isMatch("aa","aa") → true
+isMatch("aaa","aa") → false
+isMatch("aa", "*") → true
+isMatch("aa", "a*") → true
+isMatch("ab", "?*") → true
+isMatch("aab", "c*a*b") → false
+
+Thinking: 回溯法，用两个指针分别来表示目标串和模式串遍历到的当前位置，如果两个字符相等(考虑"?"通配符)，则继续前进，如果是"*"通配符，
+那么要记录下目标字符串当前位置，及模式串下一个位置，现在假设的是"*"用来匹配0个字符，继续尝试匹配，如果后面出现不匹配的情况，
+那么应该回退到这两个位置（目标串的位置要向后移一位，否则会不断回退到原来的位置），发生一次回退，代表着"*"要多匹配掉一个字符。
+按照这种方式不断尝试匹配，直到目标串都已经匹配掉或者匹配失败（匹配串中没有"*"，且不能匹配整个目标串）。这时候要看看匹配串是否还有剩余除了"*"以外的字符。
+如果最终匹配串都全部遍历完了，那么说明匹配成功。
+
+Solution：
+
+class Solution:
+    """
+    @param s: A string 
+    @param p: A string includes "?" and "*"
+    @return: is Match?
+    """
+    def isMatch(self, s, p):
+        s_index = 0
+        p_index = 0
+        last_s_index = -1
+        last_p_index = -1
+        
+        while s_index < len(s):
+            
+            # Normal match including '?'
+            if p_index < len(p) and (s[s_index] == p[p_index] or p[p_index] == '?'):
+                s_index += 1
+                p_index += 1
+            
+            # match with '*'
+            elif p_index < len(p) and p[p_index] == '*':
+                p_index += 1
+                last_s_index = s_index
+                last_p_index = p_index
+            
+            # not match but there is a '*' before
+            elif last_p_index != -1:
+                last_s_index += 1
+                s_index = last_s_index
+                p_index = last_p_index
+            
+            # not match and there is no '*' before
+            else:
+                return False
+            
+        # check if there is still character except '*' in the pattern
+        while p_index < len(p) and p[p_index] == '*':
+            p_index += 1
+        
+        # if finish scanning both string nad pattern, then it matches well
+        return p_index == len(p)
+
