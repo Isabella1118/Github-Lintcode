@@ -1,0 +1,84 @@
+Description
+Implement regular expression matching with support for '.' and '*'.
+
+'.' Matches any single character.
+'*' Matches zero or more of the preceding element.
+The matching should cover the entire input string (not partial).
+
+
+The function prototype should be:
+
+bool isMatch(string s, string p)
+
+Example
+isMatch("aa","a") → false
+isMatch("aa","aa") → true
+isMatch("aaa","aa") → false
+isMatch("aa", "a*") → true
+isMatch("aa", ".*") → true
+isMatch("ab", ".*") → true
+isMatch("aab", "c*a*b") → true
+
+Thinking: 难题，使用动态规划。 dp[i][j]表示s[i:]和p[j:]的匹配情况，围绕"*"进行分类讨论，有很多分类情况，详见注释
+
+Solution：
+
+class Solution:
+    """
+    @param s: A string 
+    @param p: A string includes "." and "*"
+    @return: A boolean
+    """
+    def isMatch(self, s, p):
+        m = len(s)
+        n = len(p)
+        
+        # init dp
+        dp = [[False for i in range(n + 1)] for j in range(m + 1)]
+        
+        # when string and pattern are all None
+        dp[m][n] = True
+        
+        # when the string is None, pattern like "a*" can still match it
+        for i in range(n - 1, -1, -1):
+            if p[i] == "*":
+                dp[m][i] = dp[m][i + 1]
+            elif i + 1 < n and p[i + 1] == "*":
+                dp[m][i] = dp[m][i+1]
+            else:
+                dp[m][i] = False
+        
+        for i in range(m - 1, -1, -1):
+            for j in range(n - 1, -1, -1):
+                
+                # when the current character is "*"
+                if p[j] == "*":
+                    if j - 1 >= 0 and p[j - 1] != "*":
+                        dp[m][j] = dp[m][j + 1]
+                    
+                    # if the pattern is starting with "*" or has "**" in it
+                    else:
+                        return False
+                
+                # when the second character of pattern is "*"
+                elif j + 1 < n and p[j + 1] == "*":
+                    
+                     # when the current charater matches, there are three possible situation
+                     # 1. ".*" matches nothing
+                     # 2. "c*" mathes more than one character
+                     # 3. "c*" just matches one character
+                    if s[i] == p[j] or p[j] == ".":
+                        dp[i][j] = dp[i][j + 2] or dp[i + 1][j] or dp[i + 1][j + 2]
+                         
+                     # ignore the first two characters("c*") in pattern since they cannot match
+                     # the current character in string
+                    else:
+                        dp[i][j] = dp[i][j + 2]
+                else:
+                    # when the current character is matched
+                    if s[i] == p[j] or p[j] == ".":
+                        dp[i][j] = dp[i + 1][j + 1]
+                    else:
+                        dp[i][j] = False
+            
+        return dp[i][j]
