@@ -1,0 +1,39 @@
+Description
+
+Given a digit string excluded 01, return all possible letter combinations that the number could represent.
+
+A mapping of digit to letters (just like on the telephone buttons) is given below.
+
+Although the above answer is in lexicographical order, your answer could be in any order you want.
+ 
+Example
+Given "23"
+
+Return ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]
+
+Thinking: 使用多个list和对list的shallow copy
+
+Solution:
+
+class Solution:
+    """
+    @param digits: A digital string
+    @return: all posible letter combinations
+    """
+    def letterCombinations(self, digits):
+        import copy
+        chr = ["", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"]
+        res = []
+        for i in range(0, len(digits)):
+            num = int(digits[i])
+            tmp = []
+            for j in range(0, len(chr[num])):
+                if len(res):
+                    for k in range(0, len(res)):
+                        # To access the items in a sublist, simply append an additional index
+                        tmp.append(res[k] + chr[num][j])    
+                else:
+                    tmp.append(chr[num][j])
+            
+            res = copy.copy(tmp)     # shallow copy of tmp
+        return res
