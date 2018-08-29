@@ -1,0 +1,31 @@
+Description
+Given a string, find all permutations of it without duplicates.
+  
+Example
+Given "abb", return ["abb", "bab", "bba"].
+
+Given "aabb", return ["aabb", "abab", "baba", "bbaa", "abba", "baab"].
+
+Thinking:permutation 类的基本型, 套用dfs的老套路，先把str排下序, 注意python里字符串是不能直接sort的，所以用了个''.join,
+然后生成result 和 path 放进dfs函数往下砸, 砸到str为空字串时返回
+
+Solution:
+
+class Solution:
+    """
+    @param str: A string
+    @return: all permutations
+    """
+    def stringPermutation2(self, str):
+        result = []
+        s = ''.join(sorted(str))
+        self.dfs(result, "", s)
+        return result
+        
+    def dfs(self, result, path, str):
+        if not str:
+            result.append(path)
+        for i in range(len(str)):
+            if i != 0 and str[i] == str[i-1]:
+                continue
+            self.dfs(result, path+str[i], str[:i]+str[i+1:])
