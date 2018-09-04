@@ -1,0 +1,36 @@
+Description
+Follow up for N-Queens problem.
+
+Now, instead outputting board configurations, return the total number of distinct solutions.
+  
+Example
+For n=4, there are 2 distinct solutions.
+
+Thinking: 思路与 N-Queens 一样，不过把原先用来最后拼装的参数之类都去掉了，换了一个计数器来记录数量, that is, Column直接记为n而不是[]，
+因为只需要计数，不需要返回位置组合.
+
+Solution:
+
+class Solution(object):
+    def totalNQueens(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        self.col = [False] * n
+        self.diag = [False] * (2 * n)
+        self.anti_diag = [False] * (2 * n)
+        self.result = 0
+        self.recursive(0, n)
+        return self.result
+
+    def recursive(self, row, n):
+
+        if row == n:
+            self.result += 1
+        else:
+            for i in range(n):
+                if not self.col[i] and not self.diag[row + i] and not self.anti_diag[n - i + row]:
+                    self.col[i] = self.diag[row + i] = self.anti_diag[n - i + row] = True
+                    self.recursive(row + 1, n)
+                    self.col[i] = self.diag[row + i] = self.anti_diag[n - i + row] = False
