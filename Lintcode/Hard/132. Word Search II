@@ -1,0 +1,92 @@
+Description
+Given a matrix of lower alphabets and a dictionary. Find all words in the dictionary that can be found in the matrix. A word can start from any position in the matrix and go left/right/up/down to the adjacent position. One character only be used once in one word.
+ 
+Example
+Given matrix:
+
+doaf
+agai
+dcan
+and dictionary:
+
+{"dog", "dad", "dgdg", "can", "again"}
+
+return {"dog", "dad", "can", "again"}
+
+
+dog:
+doaf
+agai
+dcan
+dad:
+
+doaf
+agai
+dcan
+can:
+
+doaf
+agai
+dcan
+again:
+
+doaf
+agai
+dcan
+
+Thinking: 使用 HashMap 的版本。将所有的单词的 Prefix 都加入 HashMap 中。HashMap 的 value 用户判断这是一个 prefix 还是一个 word。
+如果是 prefix 就是 false，如果是 word 就是 true.
+
+Solution:
+
+class Solution:
+    """
+    @param board: A list of lists of character
+    @param words: A list of string
+    @return: A list of string
+    """
+    def wordSearchII(self, board, words):
+        if board is None or board[0] is None or len(board) == 0 or len(board[0]) == 0:
+            return False
+        m = len(board)
+        n = len(board[0])
+        visited = [[False for i in range(n)] for j in range(m)]
+        prefixset = self.getprefix(words)
+        wordset = []
+        for i in range(m):
+            for j in range(len(board[i])):
+                visited[i][j] = True
+                self.dfs(board, visited, i, j, board[i][j], prefixset, wordset)
+                visited[i][j] = False
+        return wordset
+        
+    def getprefix(self, words):
+        prefixset = {}
+        for word in words:
+            for i in range(len(word) - 1):
+                prefix = word[0:i+1]
+                if prefix not in prefixset:
+                    prefixset[prefix] = False
+            prefixset[word] = True
+        return prefixset
+    
+    def dfs(self, board, visited, x, y, word, prefixset, wordset):
+        if word not in prefixset:
+            return
+        if prefixset.get(word) and word not in wordset:
+            wordset.append(word)
+        dx = [1, 0, 0, -1]
+        dy = [0, 1, -1, 0]
+        for i in range(4):
+            adjx = x + dx[i]
+            adjy = y + dy[i]
+            if (not self.insideboard(board, adjx, adjy)) or (visited[adjx][adjy]):
+                continue
+            visited[adjx][adjy] = True
+            self.dfs(board, visited, adjx, adjy, word + board[adjx][adjy], prefixset, wordset)
+            visited[adjx][adjy] = False
+            
+    def insideboard(self, board, x, y):
+        return x>=0 and x<len(board) and y>=0 and y<len(board[0])
+
+
