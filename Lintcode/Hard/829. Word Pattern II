@@ -1,0 +1,74 @@
+Description
+Given a pattern and a string str, find if str follows the same pattern.
+
+Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty substring in str.(i.e if a corresponds to s, then b cannot correspond to s. For example, given pattern = "ab", str = "ss", return false.)
+
+You may assume both pattern and str contains only lowercase letters.
+  
+Example
+Given pattern = "abab", str = "redblueredblue", return true.
+Given pattern = "aaaa", str = "asdasdasdasd", return true.
+Given pattern = "aabb", str = "xyzabcxzyabc", return false.
+
+Thinking: 使用DFS
+
+Solution:
+
+class Solution:
+    """
+    @param pattern: a string,denote pattern string
+    @param str: a string, denote matching string
+    @return: a boolean
+    """
+    def wordPatternMatch(self, pattern, str):
+        if not pattern and str or not str and pattern or len(pattern) > len(str):
+            return False
+        
+        # check检查pattern是否有记录，check2检查str对应的pattern
+        #因为是一一对应，所以两个方向都要保证
+        self.ans, self.check, self.check2 = False, {}, {}
+        
+        def wordCheck(pattern, str, p_start, s_start):
+            if self.ans:
+                return
+            size = len(pattern)
+            
+            #注意判断条件是pattern和str都要到最后位置
+            #到最后位置后无论结果如何都要return，不然下次递归会越界
+            if p_start == size:
+                if s_start == len(str):
+                    self.ans = True
+                return
+            
+            #每层递归检查一个pattern，比如a,b,b,b这样
+            #for loop检查的是对于当前的pattern有哪些可能性
+            for i in range(s_start, len(str)):
+                cur_pattern = pattern[p_start]
+                if cur_pattern in self.check:
+                    pattern_len = len(self.check[cur_pattern])
+                    new_pos = s_start + pattern_len
+                    
+                    #p_start+1保证下层递归检查的是下一个pattern，new_pos要直接跳过已经匹配的str
+                    if self.check[cur_pattern] == str[s_start:new_pos]:
+                        wordCheck(pattern, str, p_start+1, new_pos)
+                    break
+                
+                else:
+                    match = str[s_start:i+1]
+                    
+                    #pattern未存但是str已有记录，证明该方案已被其他pattern注册
+                    if match in self.check2 and self.check2[match] != cur_pattern:
+                        continue
+                    
+                    #记录时候同时记录保证一一对应，之后也要同时back track
+                    self.check[cur_pattern] = match
+                    self.check2[match] = cur_pattern
+                    
+                    #i是当前方案下，被切割str的最后位置，所以传i+1下去
+                    new_pos = i+1
+                    wordCheck(pattern, str, p_start+1, new_pos)
+                    self.check.pop(cur_pattern)
+                    self.check2.pop(match)
+                    
+        wordCheck(pattern, str, 0, 0)
+        return self.ans
