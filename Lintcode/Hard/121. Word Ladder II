@@ -1,0 +1,98 @@
+Description
+Given two words (start and end), and a dictionary, find all shortest transformation sequence(s) from start to end, such that:
+
+Only one letter can be changed at a time
+Each intermediate word must exist in the dictionary
+All words have the same length.
+All words contain only lowercase alphabetic characters.
+ 
+Example
+Given:
+start = "hit"
+end = "cog"
+dict = ["hot","dot","dog","lot","log"]
+Return
+  [
+    ["hit","hot","dot","dog","cog"],
+    ["hit","hot","lot","log","cog"]
+  ]
+  
+  
+Thinking: 先把graph建好, 用bfs从endpoint开始求出其他各点到endpoint的距离, 用dfs从start开始traverse到endpoint, 跳过绕路的选择.
+
+Solution:
+
+import string
+class Solution:
+    """
+    @param: start: a string
+    @param: end: a string
+    @param: dict: a set of string
+    @return: a list of lists of string
+    """
+    Graph = dict()
+    results = []
+    visited = set()   # items in set list are randomly ordered (unordered and unindexed)
+    
+    def findLadders(self, start, end, Dict):
+        # initialization of Graph
+        self.Graph[start] = set()
+        self.Graph[end] = set()
+        for word in Dict:
+            self.Graph[word] = set()
+        
+        self.buildGraph(start, Dict)
+        self.buildGraph(end, Dict)
+        for word in Dict:
+            self.buildGraph(word, Dict)
+        
+        
+        # return a dictionary of all distances measured from end to all other nodes
+        dists = self.bfs(end)
+        self.dfs(start, end, [], dists)
+        return self.results
+        
+    # for each word, find its neighbors in the Graph
+    def buildGraph(self, word, Dict):
+        # get a list of 26 letters
+        letters = list(string.ascii_lowercase)
+        # get all neighbors for word
+        for i in range(len(word)):
+            L = word[:i]
+            R = word[i+1:]
+            for char in letters:
+                Str = L + char + R
+                if Str in Dict and Str != word:
+                    self.Graph[word].add(Str)
+                    self.Graph[Str].add(word)
+    
+    # dfs traversal to the end point
+    def dfs(self, node, end, path, dists):
+        path.append(node)
+        if (node == end):
+            copy = list(path)
+            self.results.append(copy)
+            return
+        
+        for neighbor in self.Graph[node]:
+            # skip paths that are not optimal
+            if (dists[neighbor] != dists[node] - 1):
+                continue # try the next neighbor
+            self.dfs(neighbor, end, path, dists)
+            path.pop(-1)
+            
+    # find shortest distance from the end point to all other nodes in the Graph
+    def bfs(self, node):
+        Q = []
+        dists = dict()
+        Q.append(node)
+        self.visited.add(node)
+        dists[node] = 0
+        while len(Q) > 0:
+            E = Q.pop(0)
+            for u in self.Graph[E]:
+                if u not in self.visited:
+                    Q.append(u)
+                    self.visited.add(u)
+                    dists[u] = dists[E] + 1
+        return dists
