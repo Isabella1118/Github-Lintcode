@@ -14,7 +14,7 @@ Input: 120
 Output: 21
 
 Thinking:
-1. x is given 32-bit integer, overflow should be considered - whether x is bigger than 2147483647.
+1. x is given 32-bit integer, overflow should be considered - whether x is bigger than 2147483647, which is 2^31.
 2. x can be positive or negative
 3. if the unit digit is 0, x cannot be reversed directly
 eg: x = 328
