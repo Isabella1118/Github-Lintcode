@@ -21,6 +21,6 @@ class Solution:
         hash = {}
         for i in range(len(nums)):
             if target - nums[i] in hash:
-                return[hash[target-nums[i]], i]
-            hash[nums[i]]=i
+                return[hash[target-nums[i]], i]    //前面一个数已经放进去了，所以在i前面
+            hash[nums[i]]=i        //把nums中的数放入hash表里
         return [-1, -1]
