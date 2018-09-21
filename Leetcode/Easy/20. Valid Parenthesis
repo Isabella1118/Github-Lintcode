@@ -30,6 +30,7 @@ Output: true
 Thinking:用栈来解决的问题，遇到左括号就加入栈内，遇到右括号时如果栈为空（类似"]]]"的情况），则失败，否则取栈顶元素，看两个括号是否匹配。
 如果正要入栈的是右括号，而栈顶元素不是能与之消去的相应左括号，那么该输入字符串一定是无效的。
 如果最后栈不为空（类似"[[["的情况），则匹配失败。
+The purpose of zip() is to map the similar index of multiple containers so that they can be used just using as single entity.
 
 class Solution:
     def isValid(self, s):
