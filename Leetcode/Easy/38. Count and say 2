@@ -1,0 +1,53 @@
+The count-and-say sequence is the sequence of integers with the first five terms as following:
+
+1.     1
+2.     11
+3.     21
+4.     1211
+5.     111221
+1 is read off as "one 1" or 11.
+11 is read off as "two 1s" or 21.
+21 is read off as "one 2, then one 1" or 1211.
+
+Given an integer n where 1 ≤ n ≤ 30, generate the nth term of the count-and-say sequence.
+
+Note: Each term of the sequence of integers will be represented as a string.
+
+ 
+
+Example 1:
+
+Input: 1
+Output: "1"
+Example 2:
+
+Input: 4
+Output: "1211"
+
+Thinking: 
+1. i代表字符下标，从0开始取值，也就是从第一个字符开始，因为要让i取到最后一个字符，并且后面还要进行i+1的操作，所以将原字符串随意加上一个‘*’字符防止溢出
+2. count代表此时已经连续相同的字符个数
+3. res代表最终输出的字符串
+4. 只要i下标对应的字符等于下一个字符，则sum和i都加1，无限循环
+5. 如果i下标对应的字符不等于下一个字符了，则res应该加上str(sum)和i下标对应的那个字符，并且i加1，sum复原回0
+
+Solution:
+
+class Solution(object):
+    def countAndSay(self, n):
+        """
+        :type n: int
+        :rtype: str
+        """
+        if n == 1:
+            return '1'
+        res = ''
+        count = 1
+        s = self.countAndSay(n-1) + '#'    // 加上#是为了防止溢出
+        for i in range(len(s)-1):
+            if s[i] == s[i+1]:
+                count += 1
+            else:
+                res += str(count) + str(s[i])
+                count = 1          // count要还原到1
+        return res 
