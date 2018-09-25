@@ -1,0 +1,22 @@
+Given a non-negative integer numRows, generate the first numRows of Pascal's triangle.
+
+In Pascal's triangle, each number is the sum of the two numbers directly above it.
+
+Thinking: 杨辉三角的特点是每一行的第一和最后一个元素是1，其它元素是上一行它左右两个元素之和。
+以[1,3,3,1]为例，下一行的中间元素就是[1+3,3+3,3+1]，也就是[1,3,3]和[3,3,1]对应数字求和。
+
+Solution:
+
+class Solution(object):
+    def generate(self, numRows):
+        """
+        :type numRows: int
+        :rtype: List[List[int]]
+        """
+        if not numRows:
+            return []
+        result = [[1]]
+        while numRows > 1:
+            result.append([1] + [a + b for a, b in zip(result[-1][:-1], result[-1][1:])] + [1]) #第四行就是3，3，1和1，3，3相加得到4，6，4
+            numRows -= 1
+        return result
