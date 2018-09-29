@@ -1,0 +1,31 @@
+Given a non-negative index k where k ≤ 33, return the kth index row of the Pascal's triangle.
+
+Note that the row index starts from 0.
+
+In Pascal's triangle, each number is the sum of the two numbers directly above it.
+
+Example:
+
+Input: 3
+Output: [1,3,3,1]
+
+Thinking: 可以知道第k行需要(k+1)的空间,依次添加。注意最后每行要单独添上结尾的1.
+
+Solution:
+
+class Solution(object):
+    def getRow(self, rowIndex):
+        """
+        :type rowIndex: int
+        :rtype: List[int]
+        """
+        if rowIndex == 0:
+            return [1]
+        res = [1]
+        for i in range(1, rowIndex+1):
+            tmp = [1]
+            for j in range(1, i):
+                tmp.append(res[j-1]+res[j])
+            tmp.append(1)    #the last number should be 1
+            res = tmp
+        return res
