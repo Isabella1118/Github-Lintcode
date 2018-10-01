@@ -1,0 +1,26 @@
+Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+
+Note: For the purpose of this problem, we define empty string as valid palindrome.
+
+Example 1:
+
+Input: "A man, a plan, a canal: Panama"
+Output: true
+Example 2:
+
+Input: "race a car"
+Output: false
+
+Thinking: 先将字符串中的非字母和数字的字符去除，同时把所有的字母转换为小写，再判断新的字符串与自己翻转的字符串是否相等。
+这种方法代码比较简练，也可以采用双指针的方法从两端开始遍历数列来进行判断。
+
+Solution:
+
+class Solution(object):
+    def isPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        isalnumericS = [c for c in s.lower() if c.isalnum()]
+        return isalnumericS == isalnumericS[::-1]
