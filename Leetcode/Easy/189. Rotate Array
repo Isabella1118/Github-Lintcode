@@ -1,0 +1,41 @@
+Given an array, rotate the array to the right by k steps, where k is non-negative.
+
+Example 1:
+
+Input: [1,2,3,4,5,6,7] and k = 3
+Output: [5,6,7,1,2,3,4]
+Explanation:
+rotate 1 steps to the right: [7,1,2,3,4,5,6]
+rotate 2 steps to the right: [6,7,1,2,3,4,5]
+rotate 3 steps to the right: [5,6,7,1,2,3,4]
+Example 2:
+
+Input: [-1,-100,3,99] and k = 2
+Output: [3,99,-1,-100]
+Explanation: 
+rotate 1 steps to the right: [99,-1,-100,3]
+rotate 2 steps to the right: [3,99,-1,-100]
+
+Thinking: 右旋k个数字有个等价操作，就是将前k个数字翻转，将剩下的数字也翻转，最后将整个数组翻转。此时数组与右旋k个数字的结果相同。
+这个解法空间复杂度为O(1), 时间复杂度为O(n)。注意，k可能比数组的长度n还大，我们可以将k对n取余数，因为右旋n个数字相当于没有变化，可以减少计算量。
+
+Solution:
+
+class Solution(object):
+    def rotate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: void Do not return anything, modify nums in-place instead.
+        """
+        def reverse(nums, start, end):
+            while start < end:
+                nums[start], nums[end] = nums[end], nums[start]
+                start += 1
+                end -= 1
+            
+        n = len(nums)
+        k %= n
+        reverse(nums, 0, n-k-1)
+        reverse(nums, n-k, n-1)
+        reverse(nums, 0, n-1)
