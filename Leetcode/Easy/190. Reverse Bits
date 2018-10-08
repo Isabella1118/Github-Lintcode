@@ -1,0 +1,19 @@
+Reverse bits of a given 32 bits unsigned integer.
+
+Example:
+
+Input: 43261596
+Output: 964176192
+Explanation: 43261596 represented in binary as 00000010100101000001111010011100, 
+             return 964176192 represented in binary as 001110010
+             
+Thinking: 先将输入转换成2进制字符串，再翻转并扩充到32位，再将此32位的二进制转为无符号整数即可。利用Python的bin()函数很方便。
+
+Solution:
+
+class Solution:
+    # @param n, an integer
+    # @return an integer
+    def reverseBits(self, n):
+        b = bin(n)[:1:-1]   //第0位和第1位exclusive，第2位开始直到最后一位，bin()用来转换二进制
+        return int(b+'0'*(32-len(b)), 2)    //转换为整数，base为2
