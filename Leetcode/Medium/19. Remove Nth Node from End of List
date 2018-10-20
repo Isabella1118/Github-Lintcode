@@ -6,7 +6,35 @@ Given linked list: 1->2->3->4->5, and n = 2.
 
 After removing the second node from the end, the linked list becomes 1->2->3->5.
 
-Thinking:
+Thinking: 基本思路就是用两个指针一前一后遍历链表，在第一指针遍历了n节点后，第二个指针开始和它同步前进。需要注意的是如果去除的正好是头节点，
+那情况就有些特殊，需要分类讨论。可以添加一个假的头节点，使原来的头节点也变为普通的节点，这样就不用分类了。
+关于节点去除，就是通过前一个节点的指针指向当前节点的后一个节点。最后返回头节点即可，因为后边的节点就都知道了。
 
 Solution:
 
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def removeNthFromEnd(self, head, n):
+        """
+        :type head: ListNode
+        :type n: int
+        :rtype: ListNode
+        """
+        dummy = ListNode(-1)
+        dummy.next = head
+        p, q = dummy, dummy
+        
+        for i in range(n):
+            p = p.next
+        
+        while p.next:
+            p = p.next
+            q = q.next
+            
+        q.next = q.next.next
+        return dummy.next
