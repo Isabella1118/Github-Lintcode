@@ -1,0 +1,40 @@
+Given a non-empty array of digits representing a non-negative integer, plus one to the integer.
+
+The digits are stored such that the most significant digit is at the head of the list, and each element in the array contain a single digit.
+
+You may assume the integer does not contain any leading zero, except the number 0 itself.
+
+Example 1:
+
+Input: [1,2,3]
+Output: [1,2,4]
+Explanation: The array represents the integer 123.
+Example 2:
+
+Input: [4,3,2,1]
+Output: [4,3,2,2]
+Explanation: The array represents the integer 4321.
+
+Thinking: 是否加和等于10，是否要进位。
+
+Solution:
+
+class Solution(object):
+    def plusOne(self, digits):
+        """
+        :type digits: List[int]
+        :rtype: List[int]
+        """
+        if not digits:
+            return [1]
+        flag = 1    #要用flag判断是否有进位，因为还有可能是0
+        for i in range(len(digits)-1, -1, -1):   #从最后一位开始，逐渐减1到第一位
+            if flag + digits[i] == 10:  #最后一位加一如果是10，那么此位变0，前一位继续加一
+                digits[i] = 0
+                flag = 1
+            else:
+                digits[i] = digits[i] + flag   #最后一位加一如果不是10，此位加一即可
+                flag = 0         #此时flag变为0，因为前一位无需进位
+        if flag == 1:       #如果flag还是1，说明第一位要从0进位成1了
+            digits.insert(0, 1)      #放一个1到第一位
+        return digits
