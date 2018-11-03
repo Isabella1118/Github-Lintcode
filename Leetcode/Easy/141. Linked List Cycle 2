@@ -21,6 +21,7 @@ class Solution(object):
         """
         slow = fast = head
         while fast and fast.next:   #这里定义fast.next不能为None是因为下面有fast.next.next
+        #先前进再比较，顺序不能反
             slow = slow.next
             fast = fast.next.next
             if slow == fast:
