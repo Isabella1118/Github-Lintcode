@@ -13,15 +13,14 @@ Thinking: dummy法
 
 Solution:
 
-class Solution(object):
-    def deleteDuplicates(self, head):
-        """
-        :type head: ListNode
-        :rtype: ListNode
-        """
-        dummy = head
-        while head:
-            while head.next and head.next.val == head.val:
-                head.next = head.next.next # skip duplicate node
-            head = head.next # no duplicate of current node, move to the next node
-        return dummy
+#注意一定不能写成 if head or head.next is None:
+        if head is None or head.next is None:
+            return head
+        dummy=ListNode(0)
+        dummy.next=head
+        while head.next:
+            if head.val==head.next.val:
+                head.next=head.next.next
+            else:
+                head=head.next
+        return dummy.next
