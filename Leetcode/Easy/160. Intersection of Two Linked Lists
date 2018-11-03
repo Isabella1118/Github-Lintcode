@@ -27,15 +27,26 @@ class Solution(object):
         :type head1, head1: ListNode
         :rtype: ListNode
         """
-        pA = headA
-        pB = headB
-        while pA is not pB:
-            if pA:
-                pA = pA.next
-            else:
-                pA = headB
-            if pB:
-                pB = pB.next
-            else:
-                pB = headA
-        return pA
+        lenA=self.lengthLinkedList(headA)
+        lenB=self.lengthLinkedList(headB)
+        
+        if lenA >= lenB:
+            for i in range(lenA-lenB):
+                headA=headA.next
+        else:
+            for i in range(lenB-lenA):
+                headB=headB.next
+        while headA and headB:
+            if headA==headB:
+                return headA
+            headA=headA.next
+            headB=headB.next
+        return 
+            
+    
+    def lengthLinkedList(self, head):
+        length=0
+        while head:
+            length+=1
+            head=head.next
+        return length
