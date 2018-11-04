@@ -28,15 +28,19 @@ class Solution(object):
         # 存入array判断array，比判断linked list简单，但是不是O(1) space
         # solution： 找到中点，后半部分reverse
         
+        #没有节点和只有头节点一样，都是palindrome
         if not head:
             return True
         if not head.next:
             return True
+            
+        # 用快慢指针slow和fast找中点，fast走到头slow正好在中点  eg: 1->2->3->2->1 slow = 3 when fast = 1(at end)
         slow = fast =head
         while fast and fast.next:
             slow = slow.next
             fast=fast.next.next
         
+        # 翻转中点后半部分 eg: 3<-2<-1  dummy2在末尾的1
         dummy2=None
         while slow:
             temp=slow.next
@@ -44,7 +48,7 @@ class Solution(object):
             dummy2=slow
             slow=temp
         
-        #遍历dummy2不要遍历slow，最后一个slow指向两个方向
+        #遍历dummy2不要遍历slow，最后一个slow指向两个方向  eg: 1->2->3<-2<-1  head在开头的1，dummy2在末尾的1，从两头遍历比较
         while dummy2:
             if dummy2.val!=head.val:
                 return False
