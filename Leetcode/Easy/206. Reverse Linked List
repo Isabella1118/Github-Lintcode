@@ -32,4 +32,4 @@ class Solution(object):
             head.next = dummy
             dummy = head
             head = tmp
-        return dummy
+        return dummy   #这里也可以返回head.next，因为head在null这个地方（tmp也在，因为null.next不存在）
