@@ -7,7 +7,7 @@ Example:
 Input: head = 1->4->3->2->5->2, x = 3
 Output: 1->2->2->4->3->5
 
-Thinking: 
+Thinking: 造俩linkedlist，一个小于target，一个大于target，最后把俩合起来就完事儿了。
 
 Solution:
 
