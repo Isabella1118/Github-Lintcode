@@ -45,6 +45,10 @@ class Solution(object):
         
 Better Solution:
 
+Thinking： 根据根的大小进行二分
+
+Solution：
+
 if x==0: return 0
         #左0右x
         left=0
