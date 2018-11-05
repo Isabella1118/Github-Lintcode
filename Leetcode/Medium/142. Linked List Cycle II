@@ -2,7 +2,7 @@ Given a linked list, return the node where the cycle begins. If there is no cycl
 
 Note: Do not modify the linked list.
 
-Thinking: 
+Thinking: 快慢指针。如果有环，fast两步，slow一步，slow最终能追上fast。如果有环，则head和slow重合的地方即为环开始的节点。
 
 Solution: 
 
