@@ -40,19 +40,20 @@ class Solution(object):
         return temp1.next
     
     """
-    res1=ListNode(0)
+        res1=ListNode(0) #注意：这里res1和res2要分开定义，因为是俩不同的列表的值为0的节点
         res2=ListNode(0)
         temp1=res1
         temp2=res2
-        while head:
-            if head.val<x:
+        while head:  #存在头节点
+            if head.val<x:  #小于给定值的放入第一个链表
                 res1.next=head
                 res1=res1.next
-            else:
+            else:    #大于等于给定值的放入第二个链表
                 res2.next=head
                 res2=res2.next
-            head=head.next
-        res2.next=None
-        res1.next=temp2.next
-        return temp1.next
+            head=head.next   #遍历原链表
+        
+        res2.next=None   #易错：第二个链表末尾结束
+        res1.next=temp2.next  #第一个链表的结尾和第二个链表开头连接，合并成一个列表
+        return temp1.next   #返回以第一个链表开头的最终结果链表
     """
