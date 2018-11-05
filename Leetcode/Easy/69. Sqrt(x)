@@ -42,3 +42,19 @@ class Solution(object):
             return end
         
         return start
+        
+Better Solution:
+
+if x==0: return 0
+        #左0右x
+        left=0
+        right=x
+        while left+1<right:
+            mid=left+(right-left)/2
+            if mid**2==x: return mid
+            elif mid**2>x:
+                right=mid
+            else: left=mid
+        if left**2<=x and (left+1)**2>x: return left
+        if right**2<=x and (right+1)**2>x: return right
+        
