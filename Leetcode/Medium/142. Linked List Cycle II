@@ -18,16 +18,16 @@ class Solution(object):
         :type head: ListNode
         :rtype: ListNode
         """
-        if head is None or head.next is None:
-            return None
+        if head is None or head.next is None:   #这里也可以写成not head or not head.next
+            return None                  #易错：注意这里是返回NOne不是null！！！！
         slow=fast=head  #这里不需要dummy，直接等于head
         while fast and fast.next:  #后面有fast.next.next所以fast.next需要定义不为null
             slow=slow.next
             fast=fast.next.next
             #直接两head相等，不用.val??
-            if fast==slow:
-                while head!=slow:
+            if fast==slow:    #注意这个if在while循环里
+                while head!=slow:   #注意这里是while，因为要遍历直到head和slow重合
                     head=head.next
                     slow=slow.next
                 return head
-        return None
+        return None     #注意这里没有else条件
