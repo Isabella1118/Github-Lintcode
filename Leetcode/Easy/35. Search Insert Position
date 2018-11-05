@@ -49,3 +49,29 @@ class Solution:
         if nums[end] >= target:
             return end
         return len(nums)
+        
+ Better Solution:
+ 
+ Thinking: Binary Search
+ 
+ Solution:
+ 
+ if not nums:
+            return 0
+        left=0
+        right=len(nums)-1
+        while left+1<right:
+            mid=left+(right-left)/2
+            if nums[mid]==target:
+                return mid
+            elif nums[mid]>target:
+                right=mid
+            else:
+                left=mid
+        if nums[left]>=target:
+            return left
+        elif target<=nums[right]:
+            return right
+        #还是要有right+1的情况，【1,2,3,4】 insert 7
+        else: return right+1   
+        
