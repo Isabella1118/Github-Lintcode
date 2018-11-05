@@ -20,8 +20,8 @@ class Solution(object):
         """
         if head is None or head.next is None:
             return None
-        slow=fast=head
-        while fast and fast.next:
+        slow=fast=head  #这里不需要dummy，直接等于head
+        while fast and fast.next:  #后面有fast.next.next所以fast.next需要定义不为null
             slow=slow.next
             fast=fast.next.next
             #直接两head相等，不用.val??
