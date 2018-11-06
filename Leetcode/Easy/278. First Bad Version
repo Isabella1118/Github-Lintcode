@@ -48,12 +48,12 @@ class Solution(object):
     """
     if n==0: return 0
         
-        left=1
+        left=1  #这里是1不是0！
         right=n
         while left+1 < right:
             mid=left + (right-left)/2
             # 中间不终止
-            if isBadVersion(mid) == 1: right=mid
+            if isBadVersion(mid) == 1: right=mid   #注意这里是0和1不是true false和bad good
             else: left=mid
         if isBadVersion(left)==1: return left
         else: return right
