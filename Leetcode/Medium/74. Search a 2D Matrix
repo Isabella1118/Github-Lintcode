@@ -23,7 +23,7 @@ matrix = [
 target = 13
 Output: false
 
-Thinking: Binary Search
+Thinking: Binary Search 画图
 
 Solution:
 
