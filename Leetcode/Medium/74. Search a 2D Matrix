@@ -37,8 +37,8 @@ class Solution(object):
         if not matrix:
             return False
         i = 0
-        j = len(matrix[0]) - 1
-        while i <= len(matrix) - 1 and j >= 0:
+        j = len(matrix[0]) - 1     # matrix[0]是列数
+        while i <= len(matrix) - 1 and j >= 0:   #j是列数，i是行数
             if matrix[i][j] == target:
                 return True
             elif matrix[i][j] > target:
