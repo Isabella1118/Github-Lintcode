@@ -1,0 +1,39 @@
+Description
+
+Given a collection of intervals, merge all overlapping intervals.
+
+Example
+Given intervals => merged intervals:
+
+[                     [
+  (1, 3),               (1, 6),
+  (2, 6),      =>       (8, 10),
+  (8, 10),              (15, 18)
+  (15, 18)            ]
+]
+
+Thinking：sweep line 扫描线
+
+Solution：
+
+"""
+Definition of Interval.
+class Interval(object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+"""
+
+class Solution:
+    """
+    @param intervals: interval list.
+    @return: A new interval list.
+    """
+    def merge(self, intervals):
+        ans = []
+        for interval in sorted(intervals, key=lambda x: x.start):  #返回排好序的列表，key为初始值，扫描x.start
+            if not ans or ans[-1].end < interval.start:     #添加
+                ans.append(interval)
+            else:    #合并，返回末尾中的最大值作为合并后的新末尾
+                ans[-1].end = max(ans[-1].end, interval.end)  #注意这里是interval.end不是start
+        return ans
