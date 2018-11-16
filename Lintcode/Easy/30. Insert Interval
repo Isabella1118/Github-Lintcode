@@ -1,0 +1,42 @@
+Description
+Given a non-overlapping interval list which is sorted by start point.
+
+Insert a new interval into it, make sure the list is still in order and non-overlapping (merge intervals if necessary).
+ 
+Example
+Insert (2, 5) into [(1,2), (5,9)], we get [(1,9)].
+
+Insert (3, 4) into [(1,2), (5,9)], we get [(1,2), (3,4), (5,9)].
+
+Thinking: Swap line, 和156题类似
+
+Solution:
+
+"""
+Definition of Interval.
+class Interval(object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+"""
+
+class Solution:
+    """
+    @param intervals: Sorted interval list.
+    @param newInterval: new interval.
+    @return: A new interval list.
+    """
+    def insert(self, intervals, newInterval):
+        # write your code here
+        start, end = newInterval.start, newInterval.end
+        l = []    #  把已有的intervals和newInterval比较，小的放左边，大的放右边，最后合并
+        r = []
+        for interval in intervals:
+            if interval.end < start:
+                l.append(interval)
+            elif interval.start > end:
+                r.append(interval)
+            else:
+                start = min(start, interval.start)   #重合的情况
+                end = max(end, interval.end)
+        return l + [Interval(start, end)] + r   #注意这里合并要变成Interval type
