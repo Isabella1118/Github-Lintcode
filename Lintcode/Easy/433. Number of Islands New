@@ -1,0 +1,36 @@
+Description
+Given a boolean 2D matrix, 0 is represented as the sea, 1 is represented as the island. If two 1 is adjacent, we consider them in the same island. We only consider up/down/left/right adjacent.
+
+Find the number of islands.
+
+Example
+Given graph:
+
+[
+  [1, 1, 0, 0, 0],
+  [0, 1, 0, 0, 1],
+  [0, 0, 0, 1, 1],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 1]
+]
+return 3.
+
+Thinking: Sink and count the islands.
+从(0,0)这个点开始，只要一碰到1就将最终island数加1，同时将其周围临近的所有1全部都变成0，这样后面就不会重复计算了
+
+Solution:
+
+class Solution:
+    """
+    @param grid: a boolean 2D matrix
+    @return: an integer
+    """
+    def numIslands(self, grid):
+        # write your code here
+        def sink(i, j):
+            if 0 <= i < len(grid) and 0 <= j < len(grid[0]) and grid[i][j] == 1:
+                grid[i][j] = 0
+                map(sink, (i+1, i-1, i, i), (j, j, j+1, j-1))
+                return 1
+            return 0
+        return sum(sink(i, j) for i in range(len(grid)) for j in range(len(grid[0])))
