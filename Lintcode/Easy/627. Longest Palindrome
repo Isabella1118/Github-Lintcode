@@ -1,0 +1,42 @@
+Description
+Given a string which consists of lowercase or uppercase letters, find the length of the longest palindromes that can be built with those letters.
+
+This is case sensitive, for example "Aa" is not considered a palindrome here.
+
+Assume the length of given string will not exceed 1010.
+ 
+Example
+Given s = "abccccdd" return 7
+
+One longest palindrome that can be built is "dccaccd", whose length is 7.
+
+Thinking: 
+1. 输入的是一个字符串
+2. 将字符串切割成一个一个的元素，然后能够成对的基本就能构建回文串。
+3. 将字符串先转换为列表，然后列表的每一个元素是字符串的每一个字母，排好序，这样子相同的元素会排在一起。
+4. 因为是两个成对，所以若有奇数的相同元素，也只取偶数个，另外一个不能满足要求的字母。
+5. 不能忽略中位数，即中间可以是独立的一个，并且是列表中随便的一个，为了求最大回文串，若有使单独的字母，将其放在中间，使回文串的长度+1。
+
+Solution:
+
+class Solution(object):
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        slist=list(s)   #将字符串转变为列表
+        slist.sort()    #排序
+        result=[]       #存放满足回文串的字母
+        i=0             #循环初始化
+        j=0             #回文串的长度初始为0
+        while i <len(slist)-1:
+            if slist[i]==slist[i+1]:
+                i+=2
+                j+=2
+            else:
+                i+=1
+        if j<len(slist):  #判断是否有独立的字母
+            return j+1
+        else:
+            return j
