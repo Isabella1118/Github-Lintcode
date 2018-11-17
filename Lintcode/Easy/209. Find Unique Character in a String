@@ -1,0 +1,23 @@
+Description
+Find the first unique character in a given string. You can assume that there is at least one unique character in the string.
+ 
+Example
+For "abaccdeff", return 'b'.
+
+Thinking: 先将所有字符出现的次数统计出来，再重新遍历原字符串中的字符，直到发现一个字符只出现一次，返回其下标。下面的代码用字典统计。
+
+Solution:
+
+class Solution:
+    """
+    @param str: str: the given string
+    @return: char: the first unique character in a given string
+    """
+    def firstUniqChar(self, str):
+        # Write your code here
+        letters = {}
+        for c in str:
+            letters[c] = letters[c] + 1 if c in letters else 1
+        for i in range(len(str)):
+            if letters[str[i]] == 1:
+                return str[i]
