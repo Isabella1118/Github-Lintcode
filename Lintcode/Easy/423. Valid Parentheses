@@ -1,0 +1,36 @@
+Description
+Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+ 
+Example
+The brackets must close in the correct order, "()" and "()[]{}" are all valid but "(]" and "([)]" are not.
+
+Thinking:前半部分放进stack里，碰到后半部分时看stack里pop掉的是不是对应的前半部分
+
+Solution:
+
+class Solution(object):
+    def isValid(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        stack = []
+        for i in range(len(s)):
+            #只存前半部分！！
+            if s[i] == '(' or s[i] == '[' or s[i] == '{':
+                stack.append(s[i])
+            if s[i] == ')':
+                #判断stack == []必须在前面，不然stack.pop()会报错
+                if stack == [] or stack.pop() != '(':
+                    return False
+            if s[i] == ']':
+                if stack == [] or stack.pop() != '[':
+                    return False
+            if s[i] == '}':
+                if stack == [] or stack.pop() != '{':
+                    return False
+        #注意stack里可能还有元素
+        if stack:
+            return False
+        else:
+            return True
