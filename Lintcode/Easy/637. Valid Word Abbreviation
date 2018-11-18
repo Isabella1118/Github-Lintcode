@@ -1,0 +1,48 @@
+Description
+Given a non-empty string word and an abbreviation abbr, return whether the string matches with the given abbreviation.
+
+A string such as "word" contains only the following valid abbreviations:
+
+["word", "1ord", "w1rd", "wo1d", "wor1", "2rd", "w2d", "wo2", "1o1d", "1or1", "w1r1", "1o2", "2r1", "3d", "w3", "4"]
+Notice that only the above abbreviations are valid abbreviations of the string word. Any other string is not a valid abbreviation of word.
+
+Example
+Example 1:
+
+Given s = "internationalization", abbr = "i12iz4n":
+Return true.
+Example 2:
+
+Given s = "apple", abbr = "a2e":
+Return false.
+
+Thinking：
+这里是用了一个for循环来遍历缩写单词的所有字符，然后用一个指针p来指向与其对应的原单词的位置，然后cnt表示当前读取查出来的数字：
+1. 如果读取的是数字，我们先排除首位是0的情况，然后cnt做累加；
+2. 如果读取的是字母，那么指针p向后移动cnt位：如果p到超过范围了或者p指向的字符和当前遍历到的缩写单词的字符不相等，则返回false，反之则给cnt置零继续循环.
+
+Solution:
+
+class Solution:
+    """
+    @param word: a non-empty string
+    @param abbr: an abbreviation
+    @return: true if string matches with the given abbr or false
+    """
+    def validWordAbbreviation(self, word, abbr):
+        # write your code here
+        size = len(word)
+        cnt = 0
+        loc = 0
+        for w in abbr:
+            if w.isdigit():
+                if w == '0' and cnt == 0:    #注意这里是‘0’
+                    return False 
+                cnt = cnt * 10 + int(w)
+            else:
+                loc += cnt
+                cnt = 0
+                if loc >= size or word[loc] != w:   #注意这里是>=
+                    return False
+                loc += 1
+        return loc + cnt == size
