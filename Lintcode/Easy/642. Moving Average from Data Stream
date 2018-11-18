@@ -8,7 +8,10 @@ m.next(10) = (1 + 10) / 2 // return 5.50000
 m.next(3) = (1 + 10 + 3) / 3 // return 4.66667
 m.next(5) = (10 + 3 + 5) / 3 // return 6.00000
 
-Thinking: using queue
+Thinking: 
+这道题定义了一个MovingAverage类，里面可以存固定个数字，然后我们每次读入一个数字，如果加上这个数字后总个数大于限制的个数，那么我们移除最早进入的数字，
+然后返回更新后的平均数，这种先进先出的特性最适合使用队列queue来做，而且我们还需要一个double型的变量sum来记录当前所有数字之和，这样有新数字进入后，
+如果没有超出限制个数，则sum加上这个数字，如果超出了，那么sum先减去最早的数字，再加上这个数字，然后返回sum除以queue的个数即可
 
 Solution:
 
@@ -29,10 +32,10 @@ class MovingAverage:
     """
     def next(self, val):
         # write your code here
-        self.sum += val
-        if self.queue.qsize() == self.size:
-            self.sum -= self.queue.get()
-        self.queue.put(val)
+        self.sum += val      #先把数值加入sum中，注意只是sum，size因为还没加入此数此时还没变化
+        if self.queue.qsize() == self.size:   #判断加入新数之前的size是否已经填满了window，填满了的话就要First In First Out
+            self.sum -= self.queue.get()    #remove掉第一个in的数
+        self.queue.put(val)   #remove之后，添入新的数，还是保持原来的size
         return self.sum * 1.0 / self.queue.qsize()
 
 
