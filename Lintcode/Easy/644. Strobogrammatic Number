@@ -1,0 +1,32 @@
+Description
+A mirror number is a number that looks the same when rotated 180 degrees (looked at upside down).
+
+Write a function to determine if a number is mirror. The number is represented as a string.
+
+Example
+For example, the numbers "69", "88", and "818" are all mirror numbers.
+Given num = "69" return true
+Given num = "68" return false
+
+Thinking: 这道题定义了一种对称数，就是说一个数字旋转180度和原来一样，也就是倒过来看一样，比如609，倒过来还是609等等，满足这种条件的数字其实没有几个，
+只有0,1,8,6,9。这道题其实可以看做求回文数的一种特殊情况，我们还是用双指针来检测，那么首尾两个数字如果相等的话，那么只有它们是0,1,8中间的一个才行，
+如果它们不相等的话，必须一个是6一个是9，或者一个是9一个是6，其他所有情况均返回false.
+
+Solution:
+
+class Solution:
+    """
+    @param num: a string
+    @return: true if a number is strobogrammatic or false
+    """
+    def isStrobogrammatic(self, num):
+        # write your code here
+        map = {'0':'0', '1':'1', '8':'8', '6':'9', '9':'6'}   # dictionary {key:value}, same 0, 1, 8; different 6, 9.
+        i = 0
+        j = len(num) - 1     #从开头和结尾开始，两两向中间比较
+        while i <= j:
+            if not num[i] in map or map[num[i]] != num[j]:    #不是满足条件的数或者和情况不match
+                return False
+            i = i + 1    #从开头起向右走
+            j = j - 1    #从结尾起向左走
+        return True
