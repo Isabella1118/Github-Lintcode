@@ -15,7 +15,7 @@ Thinking:
 
 Solution:
 
-from queue import Queue
+from queue import Queue   #注意这里有个import，不然就会报错！！！！！
 class MovingAverage:
     """
     @param: size: An integer
