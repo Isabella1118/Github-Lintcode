@@ -13,7 +13,7 @@ A[i], B[i] are integers in range [0, 10^5].
 
 Thinking: 
 用index()很快. 
-The index() method searches an element in the list and returns its index.
+The index() method searches an element in the list and returns its index: list.index(element).
 
 Solution:
 
