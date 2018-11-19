@@ -1,0 +1,53 @@
+Description
+Given two non-negative integers num1 and num2 represented as string, return the sum of num1 and num2.
+
+The length of both num1 and num2 is < 5100.
+Both num1 and num2 contains only digits 0-9.
+Both num1 and num2 does not contain any leading zero.
+You must not use any built-in BigInteger library or convert the inputs to integer directly.
+ 
+Example
+Given num1 = "123", num2 = "45"
+return "168"
+
+Thinking: 
+同竖式加法，竖式加法的几个要注意的地方：
+
+1. 低位对齐，即以字符串尾对齐；
+2. 加法仅为0-9与0-9间的数字相加，除此之外还要带上低位的进位；
+3. 低位的进位只可能是0或1，且初始为0；
+4. 加法可能产生进位，但进位最多为1（0-9与0-9间的数字相加，再加上进位，最大为19）。
+
+算法:
+
+1. 想要低位对齐，就同步从两个字符串的最后一个字符向前遍历，直到两个字符串均遍历完成。若中途有一个字符串遍历完成，则此后将此字符串的字符认作0。
+2. 定义变量flag记录低位的进位，初始值为0。
+3. 每次遍历时，将flag更新为加上两个字符值之后的值，再以flag的个位的数字作为当前位置的结果，更新flag为其十位上的数字（进位）。
+4. 遍历字符串完成后，如果flag为1（最高位有进位），则将1添加到结果,注意要str().
+5. 输出结果
+
+Solution:
+
+class Solution:
+    """
+    @param num1: a non-negative integers
+    @param num2: a non-negative integers
+    @return: return sum of num1 and num2
+    """
+    def addStrings(self, num1, num2):
+        # write your code here
+        res = ""
+        m = len(num1)
+        n = len(num2)
+        i = m - 1
+        j = n - 1
+        flag = 0
+        while i >= 0 or j >= 0:
+            a = int(num1[i]) if i >= 0 else 0
+            i = i - 1
+            b = int(num2[j]) if j >= 0 else 0
+            j = j - 1
+            sum = a + b + flag
+            res = str(sum % 10) + res   #注意是余数，以及这里的str
+            flag = sum / 10   #注意是商
+        return res if flag == 0 else (str(flag) + res)   #如果flag==1说明仍然有进位，要str()放到最前面 
