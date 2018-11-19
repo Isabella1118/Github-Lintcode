@@ -1,0 +1,56 @@
+Description
+Give two input stream inputA and inputB, which have Backspace. If the final result of the two input streams is equal, output YES, otherwise output NO.
+
+Input characters include only lowercase letters and '<'
+The length of input stream does not exceed 10000.
+Have you met this question in a real interview?  
+Example
+Given inputA = “abcde<<”, inputB = “abcd<e<”, return "YES".
+
+Explanation:
+The final result of inputA and inputB is abc, so return "YES".
+Given inputA = “a<<bc”, inputB = “abc<”, return "NO"
+
+Explanation:
+The final result of inputA is "bc", and the final result of inputB is "ab", so return "NO".
+
+Thinking: 要看懂题，只要碰到'<',就要pop掉一个字符.
+
+Solution:
+
+class Solution:
+    """
+    @param inputA: Input stream A
+    @param inputB: Input stream B
+    @return: The answer
+    """
+    def inputStream(self, inputA, inputB):
+        # Write your code here
+        A = []
+        lengthA = 0
+        for a in inputA:
+            if a == '<':
+                if lengthA > 0:
+                    A.pop()
+                    lengthA -= 1
+            else:
+                A.append(a)
+                lengthA += 1
+        
+        B = []
+        lengthB = 0
+        for b in inputB:
+            if b == '<':
+                if lengthB > 0:
+                    B.pop()
+                    lengthB -= 1
+            else:
+                B.append(b)
+                lengthB += 1
+        
+        if lengthA == lengthB:
+            for i in range(lengthA):
+                if A[i] != B[i]:
+                    return "NO"
+            return "YES"
+        return "NO"
