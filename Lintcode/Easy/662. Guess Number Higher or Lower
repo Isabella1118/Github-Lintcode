@@ -1,0 +1,40 @@
+Description
+We are playing the Guess Game. The game is as follows:
+
+I pick a number from 1 to n. You have to guess which number I picked.
+
+Every time you guess wrong, I'll tell you whether the number is higher or lower.
+
+You call a pre-defined API guess(int num) which returns 3 possible results (-1, 1, or 0):
+ 
+Example
+n = 10, I pick 4 (but you don't know)
+
+Return 4. Correct !
+
+Thinking: Binary Search
+
+Solution:
+
+"""
+The guess API is already defined for you.
+@param num, your guess
+@return -1 if my number is lower, 1 if my number is higher, otherwise return 0
+you can call Guess.guess(num)
+"""
+
+
+class Solution:
+    # @param {int} n an integer
+    # @return {int} the number you guess
+    def guessNumber(self, n):
+        # Write your code here
+        left, right = 1, n   #注意这里是1到n
+        while left <= right:  #注意这里是小于等于
+            mid = int((left + right) / 2)   #注意这里要有int()
+            if Guess.guess(mid) == -1:  # my number is lower than your guess
+                right = mid - 1
+            elif Guess.guess(mid) == 1:  # my number is higher than your guess
+                left = mid + 1
+            else:
+                return mid
