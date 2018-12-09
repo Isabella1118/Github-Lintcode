@@ -1,0 +1,30 @@
+Description
+Given an array of integers and an integer k, you need to find the total number of continuous subarrays whose sum equals to k.
+
+Example
+Input:nums = [1,1,1], k = 2
+Output: 2
+
+Thinking: 使用哈希表来存储当前出现过的prefix sum.从0到元素i有sum = nums[0]+...+nums[i],
+从0到元素i之前的某元素j有nums[0]+...+nums[j]和为sum-k, 那么元素j+1到元素i的和即为nums[j+1]+...+nums[i]=k.
+求和为k的元素即为求和为sum-k的元素.
+这里用到collection.counters用来counting hashable objects. It's an unordered collection where elements are stored as dictionary
+keys and their counts are stored as dictionary values.
+
+Solution:
+
+class Solution:
+    """
+    @param nums: a list of integer
+    @param k: an integer
+    @return: return an integer, denote the number of continuous subarrays whose sum equals to k
+    """
+    def subarraySumEqualsK(self, nums, k):
+        # write your code here
+        ans = sums = 0
+        cnt = collections.Counter()
+        for num in nums:
+            cnt[sums] += 1 
+            sums += num
+            ans += cnt[sums - k]
+        return ans
